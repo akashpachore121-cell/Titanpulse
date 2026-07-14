@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TitanPulse | The Trading Operating System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root { --bg: #0B1120; --card-bg: rgba(17, 24, 39, 0.6); --border: rgba(255, 255, 255, 0.08); --primary: #3B82F6; --primary-glow: rgba(59, 130, 246, 0.5); --text-main: #F8FAFC; --text-muted: #94A3B8; --success: #10B981; --danger: #EF4444; --star: #FBBF24; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body { width: 100%; max-width: 100vw; overflow-x: hidden; font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--text-main); line-height: 1.5; }
+        .grid-bg { position: fixed; inset: 0; background-image: radial-gradient(var(--border) 1px, transparent 1px); background-size: 40px 40px; z-index: -2; opacity: 0.5; }
+        .glow-orb { position: absolute; width: 100vw; max-width: 600px; height: 600px; background: radial-gradient(circle, var(--primary-glow) 0%, transparent 60%); filter: blur(80px); z-index: -1; top: -100px; left: 50%; transform: translateX(-50%); opacity: 0.3; pointer-events: none; }
+        nav { position: fixed; top: 0; width: 100%; padding: 16px 5%; display: flex; justify-content: space-between; align-items: center; background: rgba(11, 17, 32, 0.8); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); z-index: 100; }
+        .logo { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.5px; }
+        .nav-links { display: flex; gap: 32px; font-size: 0.875rem; font-weight: 500; }
+        .nav-links a { color: var(--text-muted); text-decoration: none; transition: 0.3s; }
+        .nav-links a:hover { color: var(--text-main); }
+        .btn { padding: 10px 24px; border-radius: 8px; font-weight: 600; font-size: 0.875rem; cursor: pointer; transition: all 0.3s ease; border: none; white-space: nowrap; }
+        .btn-ghost { background: transparent; color: var(--text-main); }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
+        .btn-primary:hover { box-shadow: 0 0 30px rgba(59, 130, 246, 0.5); transform: translateY(-1px); }
+        .hero { padding: 140px 5% 60px; display: flex; flex-direction: column; align-items: center; text-align: center; width: 100%; }
+        .badge { display: inline-block; padding: 6px 16px; background: rgba(59, 130, 246, 0.1); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 100px; color: var(--primary); font-size: 0.75rem; font-weight: 600; text-transform: uppercase; margin-bottom: 24px; }
+        h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 800; letter-spacing: -0.04em; line-height: 1.1; margin-bottom: 24px; }
+        .text-gradient { background: linear-gradient(to right, #fff, #94A3B8); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { color: var(--text-muted); font-size: clamp(1rem, 2vw, 1.125rem); max-width: 600px; margin-bottom: 40px; padding: 0 10px; }
+        .hero-buttons { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; width: 100%; padding: 0 10px; }
+        .dashboard-wrapper { width: 100%; max-width: 1100px; margin: 40px auto 0; transform: perspective(1000px) rotateX(2deg); transition: transform 0.5s ease; box-shadow: 0 30px 60px rgba(0,0,0,0.6), 0 0 0 1px var(--border); border-radius: 12px; background: #050505; display: flex; flex-direction: column; }
+        .dashboard-wrapper:hover { transform: perspective(1000px) rotateX(0deg); }
+        .window-header { height: 40px; background: #111; display: flex; align-items: center; padding: 0 16px; border-bottom: 1px solid var(--border); width: 100%; }
+        .dots { display: flex; gap: 8px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .dot-red { background: #FF5F56; } .dot-yellow { background: #FFBD2E; } .dot-green { background: #27C93F; }
+        .dashboard-body { display: flex; height: 450px; width: 100%; }
+        .sidebar { width: 220px; border-right: 1px solid var(--border); padding: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .nav-item { padding: 10px 12px; border-radius: 6px; font-size: 0.875rem; color: var(--text-muted); font-weight: 500; display: flex; align-items: center; gap: 12px; }
+        .nav-item.active { background: rgba(59, 130, 246, 0.1); color: var(--primary); }
+        .main-content { flex: 1; padding: 30px; background: #0B1120; display: flex; flex-direction: column; overflow: hidden; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 20px; }
+        .stat-card { background: var(--card-bg); border: 1px solid var(--border); padding: 20px; border-radius: 12px; }
+        .stat-card span { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; font-weight: 600; }
+        .stat-card h3 { font-size: clamp(1.2rem, 3vw, 1.5rem); margin-top: 8px; }
+        .chart-area { flex: 1; background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; align-items: flex-end; gap: 8px; }
+        .bar { flex: 1; background: var(--primary); border-radius: 4px 4px 0 0; opacity: 0.8; }
+        .bar.red { background: var(--danger); }
+        .animated-chart-section { max-width: 1000px; margin: 100px auto; padding: 0 5%; text-align: center; }
+        .animated-chart-section h3 { font-size: 2rem; margin-bottom: 10px; font-weight: 800; }
+        .animated-chart-section p { color: var(--text-muted); margin-bottom: 40px; }
+        .premium-chart-container { background: #050505; border: 1px solid var(--border); border-radius: 24px; padding: 40px 20px 0; position: relative; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .premium-chart-container::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, transparent 0%, #050505 90%); z-index: 1; }
+        .svg-chart { width: 100%; height: auto; max-height: 250px; display: block; position: relative; z-index: 0; }
+        .path-line { fill: none; stroke: var(--success); stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 2000; stroke-dashoffset: 2000; animation: draw 4s ease-in-out infinite alternate; filter: drop-shadow(0 0 4px rgba(16, 185, 129, 0.6)); }
+        .path-fill { fill: url(#greenGlowGradient); opacity: 0; animation: fadeFill 4s ease-in-out infinite alternate; }
+        @keyframes draw { 0% { stroke-dashoffset: 2000; } 100% { stroke-dashoffset: 0; } }
+        @keyframes fadeFill { 0% { opacity: 0; } 100% { opacity: 1; } }
+        .hook-section { max-width: 1200px; margin: 100px auto; padding: 0 5%; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+        .hook-text h2 { font-size: clamp(2rem, 4vw, 2.5rem); font-weight: 800; letter-spacing: -1px; margin-bottom: 20px; line-height: 1.1; color: white; }
+        .hook-text p { color: var(--text-muted); font-size: 1.1rem; margin-bottom: 30px; }
+        .mistake-list { display: flex; flex-direction: column; gap: 16px; }
+        .mistake-item { display: flex; align-items: center; gap: 12px; background: rgba(239, 68, 68, 0.1); border: 1px solid rgba(239, 68, 68, 0.2); padding: 12px 20px; border-radius: 12px; }
+        .mistake-item span { font-size: 1.2rem; }
+        .mistake-item p { margin: 0; color: #fff; font-size: 0.95rem; font-weight: 500; }
+        .hook-visual { background: var(--card-bg); border: 1px solid var(--border); padding: 30px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); position: relative; }
+        .ai-alert-box { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--danger); padding: 24px; border-radius: 16px; position: relative; overflow: hidden; }
+        .alert-header { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; color: var(--danger); font-weight: 700; font-size: 0.9rem; letter-spacing: 1px; text-transform: uppercase; }
+        .pulse-dot { width: 10px; height: 10px; background: var(--danger); border-radius: 50%; box-shadow: 0 0 10px var(--danger); animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); } 70% { box-shadow: 0 0 0 15px rgba(239, 68, 68, 0); } 100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); } }
+        .ai-alert-box h3 { font-size: 1.4rem; margin-bottom: 8px; }
+        .ai-alert-box p { color: #FECACA; font-size: 0.9rem; line-height: 1.5; margin-bottom: 20px; }
+        .lock-btn { width: 100%; background: var(--danger); color: white; padding: 12px; text-align: center; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; }
+        .section-title { text-align: center; font-size: clamp(2rem, 4vw, 2.5rem); margin: 80px 0 40px; font-weight: 800; letter-spacing: -1px; padding: 0 10px; }
+        .section-subtitle { text-align: center; color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: -20px auto 50px; padding: 0 10px; }
+        .bento-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding: 0 5%; }
+        .bento-card { background: var(--card-bg); border: 1px solid var(--border); padding: 32px; border-radius: 24px; backdrop-filter: blur(10px); transition: all 0.3s ease; }
+        .bento-card:hover { border-color: var(--primary); transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .bento-card h3 { font-size: 1.25rem; margin-bottom: 12px; font-weight: 700; }
+        .bento-card p { color: var(--text-muted); font-size: 0.95rem; }
+        .reviews-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; padding: 0 5%; }
+        .review-card { background: var(--card-bg); border: 1px solid var(--border); padding: 32px; border-radius: 24px; display: flex; flex-direction: column; justify-content: space-between; }
+        .stars { color: var(--star); font-size: 1.2rem; margin-bottom: 16px; letter-spacing: 2px; }
+        .review-text { color: var(--text-main); font-size: 1rem; line-height: 1.6; margin-bottom: 24px; font-style: italic; }
+        .user-profile { display: flex; align-items: center; gap: 12px; }
+        .avatar { width: 48px; height: 48px; border-radius: 50%; background: linear-gradient(135deg, #3B82F6, #8B5CF6); display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 1.2rem; }
+        .user-info h4 { font-size: 1rem; font-weight: 600; margin-bottom: 2px; }
+        .user-info span { font-size: 0.8rem; color: var(--text-muted); }
+        .main-footer { border-top: 1px solid var(--border); padding: 60px 5% 40px; margin-top: 100px; text-align: center; background: #050505; width: 100%; display: block; position: relative; z-index: 10; }
+        .footer-logo { font-size: 1.5rem; font-weight: 800; margin-bottom: 24px; color: white; }
+        .footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 32px; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; font-size: 0.9rem; transition: 0.3s; }
+        .footer-links a:hover { color: var(--primary); }
+        .copyright { color: var(--text-muted); font-size: 0.875rem; }
+        @media (max-width: 768px) {
+            nav { padding: 12px 16px; }
+            .logo { font-size: 1.1rem; }
+            .nav-links { display: none; }
+            .btn { padding: 8px 16px; font-size: 0.8rem; }
+            .hero { padding: 100px 16px 40px; }
+            .dashboard-wrapper { transform: none; width: calc(100% - 32px); margin: 40px 16px 0; }
+            .dashboard-body { flex-direction: column; height: auto; }
+            .sidebar { width: 100%; flex-direction: row; border-right: none; border-bottom: 1px solid var(--border); padding: 10px; overflow-x: auto; white-space: nowrap; -webkit-overflow-scrolling: touch; }
+            .nav-item { padding: 6px 12px; }
+            .main-content { padding: 16px; }
+            .stats-grid { grid-template-columns: 1fr; gap: 12px; }
+            .chart-area { height: 150px; margin-top: 12px; padding: 12px; }
+            .animated-chart-section { padding: 0 16px; margin: 60px auto; }
+            .hook-section { grid-template-columns: 1fr; gap: 40px; margin: 60px auto; padding: 0 16px; }
+            .bento-grid, .reviews-grid { grid-template-columns: 1fr; gap: 16px; padding: 0 16px; }
+            .hero-buttons { flex-direction: column; }
+            .hero-buttons .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="grid-bg"></div>
+    <div class="glow-orb"></div>
+
+    <nav>
+        <div class="logo">TITAN<span style="color: var(--primary);">PULSE</span></div>
+        <div class="nav-links">
+            <a href="#features">Features</a>
+            <a href="#reviews">Reviews</a>
+            <a href="#pricing">Pricing</a>
+        </div>
+        <div style="display: flex; gap: 8px;">
+            <button class="btn btn-ghost" style="padding: 8px 12px;">Login</button>
+            <button class="btn btn-primary" style="padding: 8px 16px;">Get Started</button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="badge">TitanPulse OS 2.0</div>
+        <h1><span class="text-gradient">Trade Smarter.</span><br>Become Consistently Profitable.</h1>
+        <p>Track every trade, review mistakes with AI, calculate precise risk, and improve your edge from one professional workspace.</p>
+        <div class="hero-buttons">
+            <button class="btn btn-primary" style="padding: 14px 32px; font-size: 1rem;">Start Free Trial</button>
+            <button class="btn btn-ghost" style="border: 1px solid var(--border); padding: 14px 32px;">Watch Demo</button>
+        </div>
+
+        <div class="dashboard-wrapper">
+            <div class="window-header">
+                <div class="dots"><div class="dot dot-red"></div><div class="dot dot-yellow"></div><div class="dot dot-green"></div></div>
+            </div>
+            <div class="dashboard-body">
+                <div class="sidebar">
+                    <div class="nav-item active">📊 Dashboard</div>
+                    <div class="nav-item">📓 Trade Journal</div>
+                    <div class="nav-item">🧠 AI Coach</div>
+                </div>
+                <div class="main-content">
+                    <div class="stats-grid">
+                        <div class="stat-card"><span>Today's PnL</span><h3 style="color: var(--success);">+$1,240.50</h3></div>
+                        <div class="stat-card"><span>Win Rate</span><h3>68.4%</h3></div>
+                        <div class="stat-card"><span>Profit Factor</span><h3>2.4</h3></div>
+                    </div>
+                    <div class="chart-area">
+                        <div class="bar" style="height: 30%;"></div>
+                        <div class="bar" style="height: 50%;"></div>
+                        <div class="bar red" style="height: 20%;"></div>
+                        <div class="bar" style="height: 70%;"></div>
+                        <div class="bar" style="height: 60%;"></div>
+                        <div class="bar red" style="height: 40%;"></div>
+                        <div class="bar" style="height: 90%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="animated-chart-section">
+        <h3>Watch Your Equity Grow</h3>
+        <p>Data visualization that proves your edge is working.</p>
+        <div class="premium-chart-container">
+            <svg viewBox="0 0 1000 250" class="svg-chart" preserveAspectRatio="none">
+                <defs>
+                    <linearGradient id="greenGlowGradient" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#10B981" stop-opacity="0.4"/>
+                        <stop offset="100%" stop-color="#10B981" stop-opacity="0"/>
+                    </linearGradient>
+                </defs>
+                <path class="path-fill" d="M0,250 L0,200 C100,200 150,150 250,170 C350,190 450,100 550,120 C650,140 700,60 800,80 C900,100 950,30 1000,50 L1000,250 Z" />
+                <path class="path-line" d="M0,200 C100,200 150,150 250,170 C350,190 450,100 550,120 C650,140 700,60 800,80 C900,100 950,30 1000,50" />
+            </svg>
+        </div>
+    </section>
+    <section class="hook-section">
+        <div class="hook-text">
+            <h2>Stop Losing Money to <br><span style="color: var(--danger);">Your Own Emotions.</span></h2>
+            <p>Market doesn't take your money. Your lack of discipline does. TitanPulse acts as your personal risk manager to stop you from destroying your account.</p>
+            <div class="mistake-list">
+                <div class="mistake-item">
+                    <span>❌</span> <p>Revenge trading after a stop-loss hits.</p>
+                </div>
+                <div class="mistake-item">
+                    <span>❌</span> <p>Entering out of FOMO at the top of a candle.</p>
+                </div>
+                <div class="mistake-item">
+                    <span>❌</span> <p>Moving your Stop-Loss to avoid taking a small loss.</p>
+                </div>
+            </div>
+        </div>
+        <div class="hook-visual">
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 15px; font-weight: 600;">LIVE WORKSPACE PREVIEW</div>
+            <div class="ai-alert-box">
+                <div class="alert-header">
+                    <div class="pulse-dot"></div> AI GUARDRAIL TRIGGERED
+                </div>
+                <h3>Revenge Trade Detected</h3>
+                <p>You are trying to enter a position just <strong>2 minutes</strong> after a major loss. Based on your history, trades taken in this emotional state have a <strong>14% win rate</strong>.</p>
+                <button class="lock-btn">Lock Terminal for 30 Minutes</button>
+            </div>
+        </div>
+    </section>
+
+    <h2 class="section-title" id="features">The Complete <span style="color: var(--primary);">Trading Edge</span></h2>
+    <section class="bento-grid">
+        <div class="bento-card">
+            <div style="font-size: 2rem; margin-bottom: 16px;">📓</div>
+            <h3>Trade Journal</h3>
+            <p>Log every trade flawlessly. Upload screenshots, record your psychology, and tag setups.</p>
+        </div>
+        <div class="bento-card">
+            <div style="font-size: 2rem; margin-bottom: 16px;">🧠</div>
+            <h3>AI Trade Review</h3>
+            <p>Our AI scans your data to detect emotional trading, tight stop losses, and FOMO patterns.</p>
+        </div>
+        <div class="bento-card">
+            <div style="font-size: 2rem; margin-bottom: 16px;">⚖️</div>
+            <h3>Risk Calculator</h3>
+            <p>Instant position sizing and risk-to-reward calculations to protect your capital.</p>
+        </div>
+        <div class="bento-card">
+            <div style="font-size: 2rem; margin-bottom: 16px;">📈</div>
+            <h3>Performance Analytics</h3>
+            <p>Visualize your equity curve, monthly reports, and discover your most profitable setups.</p>
+        </div>
+        <div class="bento-card">
+            <div style="font-size: 2rem; margin-bottom: 16px;">⚙️</div>
+            <h3>Professional Settings</h3>
+            <p>Customize your workspace with dark themes, custom tags, and broker API imports.</p>
+        </div>
+        <div class="bento-card">
+            <div style="font-size: 2rem; margin-bottom: 16px;">💎</div>
+            <h3>Flexible Billing</h3>
+            <p>Start for free, upgrade to Pro for AI limits, or get Lifetime access. You control the scale.</p>
+        </div>
+    </section>
+
+    <h2 class="section-title" id="reviews" style="margin-top: 120px;">Trusted by <span style="color: var(--primary);">Elite Traders</span></h2>
+    <p class="section-subtitle">Join thousands of traders who have stopped guessing and started trading with data.</p>
+    <section class="reviews-grid">
+        <div class="review-card">
+            <div>
+                <div class="stars">★★★★★</div>
+                <p class="review-text">"Before TitanPulse, my risk management was all over the place. The AI Coach completely changed how I look at my setups. My win rate jumped by 15%."</p>
+            </div>
+            <div class="user-profile">
+                <div class="avatar">R</div>
+                <div class="user-info"><h4>Rahul V.</h4><span>Options Trader</span></div>
+            </div>
+        </div>
+        <div class="review-card">
+            <div>
+                <div class="stars">★★★★★</div>
+                <p class="review-text">"I used to journal in Excel, which was a nightmare. This OS logs everything perfectly and the equity curve analytics keep my emotions in check."</p>
+            </div>
+            <div class="user-profile">
+                <div class="avatar" style="background: linear-gradient(135deg, #10B981, #3B82F6);">S</div>
+                <div class="user-info"><h4>Sarah J.</h4><span>Forex Day Trader</span></div>
+            </div>
+        </div>
+        <div class="review-card">
+            <div>
+                <div class="stars">★★★★★</div>
+                <p class="review-text">"The Position Size Calculator alone pays for itself. I don't enter a trade without TitanPulse open on my second monitor. Absolute game changer."</p>
+            </div>
+            <div class="user-profile">
+                <div class="avatar" style="background: linear-gradient(135deg, #F59E0B, #EF4444);">D</div>
+                <div class="user-info"><h4>David K.</h4><span>Prop Firm Funded</span></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="main-footer">
+        <div class="footer-logo">TITAN<span style="color: var(--primary);">PULSE</span></div>
+        <div class="footer-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Support</a>
+            <a href="#">Contact Us</a>
+        </div>
+        <p class="copyright">© 2026 TitanPulse. Built for elite traders. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

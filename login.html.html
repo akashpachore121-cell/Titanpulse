@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TitanPulse | Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #020617; color: #f8fafc; overflow: hidden; }
+        .glass-card { 
+            background: rgba(15, 23, 42, 0.4); 
+            backdrop-filter: blur(24px); 
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+        }
+        .bg-glow { 
+            position: absolute; 
+            width: 500px; 
+            height: 500px; 
+            background: radial-gradient(circle, rgba(37,99,235,0.15) 0%, rgba(2,6,23,0) 70%); 
+            top: 50%; left: 50%; 
+            transform: translate(-50%, -50%); 
+            z-index: -1; 
+        }
+        
+        /* Input autofill dark mode fix */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active{
+            -webkit-box-shadow: 0 0 0 30px #0f172a inset !important;
+            -webkit-text-fill-color: white !important;
+        }
+
+        /* Smooth state transitions */
+        .fade-enter { opacity: 0; transform: translateY(10px); }
+        .fade-enter-active { opacity: 1; transform: translateY(0); transition: opacity 300ms, transform 300ms; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center selection:bg-blue-500/30 relative px-4">
+
+    <!-- Ambient Glow Background -->
+    <div class="bg-glow"></div>
+
+    <!-- Back to Home Link (Vercel Style) -->
+    <a href="index.html" class="absolute top-8 left-8 text-slate-400 hover:text-white flex items-center gap-2 text-sm font-medium transition group">
+        <i class="ph ph-arrow-left group-hover:-translate-x-1 transition-transform"></i> Back to Home
+    </a>
+
+    <!-- Auth Container -->
+    <div class="w-full max-w-[420px] animate-[fadeInUp_0.5s_ease-out]">
+        
+        <!-- Logo Header -->
+        <div class="flex flex-col items-center mb-8">
+            <div class="w-12 h-12 rounded-xl bg-blue-600 flex items-center justify-center shadow-[0_0_20px_rgba(37,99,235,0.4)] mb-4">
+                <i class="ph ph-pulse text-white text-3xl font-bold"></i>
+            </div>
+            <h1 id="auth-title" class="text-2xl font-bold tracking-tight mb-1">Welcome back</h1>
+            <p id="auth-subtitle" class="text-slate-400 text-sm">Enter your details to access your dashboard.</p>
+        </div>
+
+        <!-- The Glass Card -->
+        <div class="glass-card rounded-[2rem] p-8 shadow-2xl relative overflow-hidden">
+            
+            <!-- Social Logins -->
+            <div class="flex flex-col gap-3 mb-6">
+                <button class="w-full flex items-center justify-center gap-3 bg-[#0f172a] hover:bg-slate-800 border border-slate-700/50 text-white px-4 py-3 rounded-xl text-sm font-semibold transition">
+                    <img src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google" class="w-5 h-5">
+                    Continue with Google
+                </button>
+                <button class="w-full flex items-center justify-center gap-3 bg-[#0f172a] hover:bg-slate-800 border border-slate-700/50 text-white px-4 py-3 rounded-xl text-sm font-semibold transition">
+                    <i class="ph-fill ph-apple-logo text-xl"></i>
+                    Continue with Apple
+                </button>
+            </div>
+
+            <!-- Divider -->
+            <div class="flex items-center gap-4 mb-6">
+                <div class="flex-1 h-px bg-slate-800"></div>
+                <span class="text-xs font-medium text-slate-500 uppercase tracking-wider">Or</span>
+                <div class="flex-1 h-px bg-slate-800"></div>
+            </div>
+
+            <!-- Form -->
+            <form id="auth-form" class="space-y-4" onsubmit="event.preventDefault(); window.location.href='dashboard.html';">
+                
+                <!-- Name Field (Hidden by default, shown on Signup) -->
+                <div id="name-field" class="hidden">
+                    <label class="block text-xs font-medium text-slate-400 mb-1.5 ml-1">Full Name</label>
+                    <input type="text" placeholder="John Doe" class="w-full bg-[#0f172a] border border-slate-700/50 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition">
+                </div>
+
+                <!-- Email Field -->
+                <div>
+                    <label class="block text-xs font-medium text-slate-400 mb-1.5 ml-1">Email Address</label>
+                    <input type="email" placeholder="you@example.com" required class="w-full bg-[#0f172a] border border-slate-700/50 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition">
+                </div>
+
+                <!-- Password Field -->
+                <div>
+                    <div class="flex justify-between items-center mb-1.5 ml-1 pr-1">
+                        <label class="block text-xs font-medium text-slate-400">Password</label>
+                        <a href="#" id="forgot-password" class="text-xs text-blue-400 hover:text-blue-300 font-medium">Forgot?</a>
+                    </div>
+                    <div class="relative">
+                        <input type="password" placeholder="••••••••" required class="w-full bg-[#0f172a] border border-slate-700/50 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl px-4 py-3 text-sm text-white placeholder-slate-500 outline-none transition">
+                    </div>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" id="submit-btn" class="w-full bg-blue-600 hover:bg-blue-500 text-white py-3.5 rounded-xl font-bold transition shadow-[0_0_20px_rgba(37,99,235,0.3)] mt-2">
+                    Log In
+                </button>
+            </form>
+        </div>
+
+        <!-- Footer Toggle -->
+        <p class="text-center text-sm text-slate-400 mt-8">
+            <span id="toggle-text">Don't have an account?</span> 
+            <button onclick="toggleAuthMode()" id="toggle-btn" class="text-blue-400 hover:text-blue-300 font-semibold ml-1 transition">
+                Sign up
+            </button>
+        </p>
+
+    </div>
+
+    <!-- Interactive Logic -->
+    <script>
+        let isLogin = true;
+
+        function toggleAuthMode() {
+            isLogin = !isLogin;
+            
+            const title = document.getElementById('auth-title');
+            const subtitle = document.getElementById('auth-subtitle');
+            const nameField = document.getElementById('name-field');
+            const submitBtn = document.getElementById('submit-btn');
+            const toggleText = document.getElementById('toggle-text');
+            const toggleBtn = document.getElementById('toggle-btn');
+            const forgotPassword = document.getElementById('forgot-password');
+            const form = document.getElementById('auth-form');
+
+            // Add simple fade animation class
+            form.classList.remove('fade-enter-active');
+            void form.offsetWidth; // Trigger reflow
+            form.classList.add('fade-enter-active');
+
+            if (isLogin) {
+                title.innerText = "Welcome back";
+                subtitle.innerText = "Enter your details to access your dashboard.";
+                nameField.classList.add('hidden');
+                nameField.querySelector('input').required = false;
+                submitBtn.innerText = "Log In";
+                toggleText.innerText = "Don't have an account?";
+                toggleBtn.innerText = "Sign up";
+                forgotPassword.classList.remove('hidden');
+            } else {
+                title.innerText = "Create an account";
+                subtitle.innerText = "Start trading smarter with TitanPulse today.";
+                nameField.classList.remove('hidden');
+                nameField.querySelector('input').required = true;
+                submitBtn.innerText = "Create Account";
+                toggleText.innerText = "Already have an account?";
+                toggleBtn.innerText = "Log in";
+                forgotPassword.classList.add('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

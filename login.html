@@ -192,17 +192,24 @@
             btn.disabled = isLoading;
         };
 
-        // Check active session on page load
-        async function initAuth() {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
-                document.getElementById('userEmailDisplay').textContent = session.user.email;
-                switchView('dashboardView');
-            } else {
-                switchView('loginView');
-            }
-        }
-        initAuth();
+      // Check active session on page load
+async function initAuth() {
+
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (session) {
+
+        window.location.href = "dashboard.html";
+
+    } else {
+
+        switchView('loginView');
+
+    }
+
+}
+
+initAuth();
 
         // Listen for Auth Changes (Google Auth and Sessions)
         supabase.auth.onAuthStateChange((event, session) => {

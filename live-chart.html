@@ -8,13 +8,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        tailwind.config = {
-            theme: { extend: { colors: { darkBg: '#0b0f19', cardBg: '#111827', cardBorder: '#1f2937' } } }
-        }
+        tailwind.config = { theme: { extend: { colors: { darkBg: '#0b0f19', cardBg: '#111827', cardBorder: '#1f2937' } } } }
     </script>
 </head>
 <body class="bg-darkBg text-gray-100 font-sans antialiased flex h-screen overflow-hidden">
-    <!-- Sidebar -->
     <aside class="w-64 bg-cardBg border-r border-cardBorder flex flex-col justify-between hidden md:flex">
         <div>
             <div class="p-6 border-b border-cardBorder flex items-center space-x-3">
@@ -36,40 +33,19 @@
                     <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center font-bold text-white shrink-0">TU</div>
                     <div class="truncate"><p class="text-sm font-semibold text-white truncate">TitanPulse User</p><p class="text-xs text-gray-400 truncate">user@email.com</p></div>
                 </div>
-                <button class="text-gray-400 hover:text-red-400 p-2"><i class="fa-solid fa-right-from-bracket"></i></button>
             </div>
         </div>
     </aside>
 
-    <!-- Content -->
     <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
         <header class="bg-cardBg border-b border-cardBorder h-16 flex items-center justify-between px-6 shrink-0">
             <h2 class="text-lg font-bold text-white">Live Market Chart</h2>
-            <div class="flex items-center space-x-3">
-                <select class="bg-gray-900 border border-gray-800 text-sm text-white rounded-lg px-3 py-1.5 outline-none">
-                    <option>BTC/USDT</option>
-                    <option>ETH/USDT</option>
-                    <option>SOL/USDT</option>
-                </select>
-            </div>
         </header>
         <main class="p-6 space-y-6 max-w-7xl mx-auto w-full">
             <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl flex flex-col">
-                <div class="flex items-center justify-between mb-4">
-                    <div>
-                        <h3 class="font-bold text-white text-lg">BTC / TetherUS</h3>
-                        <p class="text-2xl font-extrabold text-emerald-400 mt-1">$64,250.00 <span class="text-xs text-emerald-500 font-semibold">+2.45%</span></p>
-                    </div>
-                    <div class="flex space-x-2">
-                        <button class="px-3 py-1.5 bg-gray-800 text-xs rounded-lg text-gray-300 font-medium hover:bg-gray-700">15m</button>
-                        <button class="px-3 py-1.5 bg-gray-800 text-xs rounded-lg text-gray-300 font-medium hover:bg-gray-700">1H</button>
-                        <button class="px-3 py-1.5 bg-blue-600 text-xs rounded-lg text-white font-medium">4H</button>
-                        <button class="px-3 py-1.5 bg-gray-800 text-xs rounded-lg text-gray-300 font-medium hover:bg-gray-700">1D</button>
-                    </div>
-                </div>
-                <div class="h-[420px] relative">
-                    <canvas id="liveChartCanvas"></canvas>
-                </div>
+                <h3 class="font-bold text-white text-lg mb-2">BTC / TetherUS</h3>
+                <p class="text-2xl font-extrabold text-emerald-400 mb-4">$64,250.00 <span class="text-xs text-emerald-500">+2.45%</span></p>
+                <div class="h-[400px] relative"><canvas id="liveChartCanvas"></canvas></div>
             </div>
         </main>
     </div>
@@ -80,21 +56,11 @@
             data: {
                 labels: ['00:00', '04:00', '08:00', '12:00', '16:00', '20:00', '24:00'],
                 datasets: [{
-                    label: 'Price Action',
                     data: [62100, 62800, 62500, 63400, 63900, 63700, 64250],
-                    borderColor: '#10b981',
-                    backgroundColor: 'rgba(16, 185, 129, 0.05)',
-                    borderWidth: 2, fill: true, tension: 0.3
+                    borderColor: '#10b981', backgroundColor: 'rgba(16, 185, 129, 0.05)', borderWidth: 2, fill: true, tension: 0.3
                 }]
             },
-            options: {
-                responsive: true, maintainAspectRatio: false,
-                plugins: { legend: { display: false } },
-                scales: {
-                    x: { grid: { display: false }, ticks: { color: '#9ca3af' } },
-                    y: { grid: { color: '#1f2937' }, ticks: { color: '#9ca3af' } }
-                }
-            }
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
         });
     </script>
 </body>

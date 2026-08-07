@@ -7,13 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
-        tailwind.config = {
-            theme: { extend: { colors: { darkBg: '#0b0f19', cardBg: '#111827', cardBorder: '#1f2937' } } }
-        }
+        tailwind.config = { theme: { extend: { colors: { darkBg: '#0b0f19', cardBg: '#111827', cardBorder: '#1f2937' } } } }
     </script>
 </head>
 <body class="bg-darkBg text-gray-100 font-sans antialiased flex h-screen overflow-hidden">
-    <!-- Sidebar -->
     <aside class="w-64 bg-cardBg border-r border-cardBorder flex flex-col justify-between hidden md:flex">
         <div>
             <div class="p-6 border-b border-cardBorder flex items-center space-x-3">
@@ -35,17 +32,15 @@
                     <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center font-bold text-white shrink-0">TU</div>
                     <div class="truncate"><p class="text-sm font-semibold text-white truncate">TitanPulse User</p><p class="text-xs text-gray-400 truncate">user@email.com</p></div>
                 </div>
-                <button class="text-gray-400 hover:text-red-400 p-2"><i class="fa-solid fa-right-from-bracket"></i></button>
             </div>
         </div>
     </aside>
 
-    <!-- Content -->
     <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
         <header class="bg-cardBg border-b border-cardBorder h-16 flex items-center justify-between px-6 shrink-0">
             <h2 class="text-lg font-bold text-white">Demo Trading Terminal</h2>
             <div class="text-sm bg-gray-900 border border-gray-800 px-3 py-1.5 rounded-lg text-gray-300">
-                Virtual Balance: <span class="text-emerald-400 font-bold">$10,000.00</span>
+                Virtual Balance: <span id="virtualBalance" class="text-emerald-400 font-bold">$10,000.00</span>
             </div>
         </header>
         <main class="p-6 space-y-6 max-w-7xl mx-auto w-full">
@@ -55,24 +50,19 @@
                     <h3 class="font-bold text-white text-base">Place Order</h3>
                     <div>
                         <label class="text-xs text-gray-400 block mb-1">Select Asset</label>
-                        <select class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-sm text-white outline-none">
-                            <option>BTC/USDT ($64,250)</option>
-                            <option>ETH/USDT ($3,480)</option>
-                            <option>SOL/USDT ($142)</option>
+                        <select id="tradeAsset" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-sm text-white outline-none">
+                            <option value="BTC/USDT" data-price="64250">BTC/USDT ($64,250)</option>
+                            <option value="ETH/USDT" data-price="3480">ETH/USDT ($3,480)</option>
+                            <option value="SOL/USDT" data-price="142">SOL/USDT ($142)</option>
                         </select>
                     </div>
                     <div>
-                        <label class="text-xs text-gray-400 block mb-1">Amount (USDT)</label>
-                        <input type="number" placeholder="500" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-sm text-white outline-none">
-                    </div>
-                    <div>
-                        <label class="text-xs text-gray-400 block mb-1">Leverage</label>
-                        <input type="range" min="1" max="50" value="10" class="w-full accent-blue-500">
-                        <div class="flex justify-between text-xs text-gray-400 mt-1"><span>1x</span><span>25x</span><span>50x</span></div>
+                        <label class="text-xs text-gray-400 block mb-1">Margin Amount (USDT)</label>
+                        <input type="number" id="tradeAmount" value="500" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-sm text-white outline-none">
                     </div>
                     <div class="grid grid-cols-2 gap-3 pt-2">
-                        <button class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-emerald-600/20">Buy / Long</button>
-                        <button class="bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-red-600/20">Sell / Short</button>
+                        <button onclick="executeTrade('LONG')" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-emerald-600/20">Buy / Long</button>
+                        <button onclick="executeTrade('SHORT')" class="bg-red-600 hover:bg-red-500 text-white font-bold py-3 rounded-xl transition shadow-lg shadow-red-600/20">Sell / Short</button>
                     </div>
                 </div>
 
@@ -86,20 +76,12 @@
                                     <th class="py-3 px-3">Asset</th>
                                     <th class="py-3 px-3">Type</th>
                                     <th class="py-3 px-3">Size</th>
-                                    <th class="py-3 px-3">Entry</th>
-                                    <th class="py-3 px-3">P&L</th>
-                                    <th class="py-3 px-3 text-right">Action</th>
+                                    <th class="py-3 px-3">Entry Price</th>
+                                    <th class="py-3 px-3">Action</th>
                                 </tr>
                             </thead>
-                            <tbody class="divide-y divide-gray-800/50">
-                                <tr>
-                                    <td class="py-3 px-3 font-semibold text-white">BTC/USDT</td>
-                                    <td class="py-3 px-3"><span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded text-xs">LONG 10x</span></td>
-                                    <td class="py-3 px-3 text-gray-300">$1,200</td>
-                                    <td class="py-3 px-3 text-gray-300">$63,500</td>
-                                    <td class="py-3 px-3 text-emerald-400 font-bold">+$142.50</td>
-                                    <td class="py-3 px-3 text-right"><button class="bg-red-500/10 text-red-400 px-3 py-1 rounded-lg text-xs hover:bg-red-500/20">Close</button></td>
-                                </tr>
+                            <tbody id="activePositionsTable" class="divide-y divide-gray-800/50">
+                                <!-- Dynamic rows injected here -->
                             </tbody>
                         </table>
                     </div>
@@ -107,5 +89,90 @@
             </div>
         </main>
     </div>
+
+    <script>
+        let balance = parseFloat(localStorage.getItem('tp_balance')) || 10000.00;
+        let trades = JSON.parse(localStorage.getItem('tp_trades')) || [];
+
+        function updateUI() {
+            document.getElementById('virtualBalance').innerText = '$' + balance.toLocaleString('en-US', {minimumFractionDigits: 2});
+            let tbody = document.getElementById('activePositionsTable');
+            tbody.innerHTML = '';
+
+            let activeTrades = trades.filter(t => t.status === 'Active');
+            if(activeTrades.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="5" class="py-4 text-center text-gray-500 text-xs">No active positions open.</td></tr>`;
+                return;
+            }
+
+            activeTrades.forEach((t) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td class="py-3 px-3 font-semibold text-white">${t.asset}</td>
+                        <td class="py-3 px-3"><span class="${t.type === 'LONG' ? 'text-emerald-400 bg-emerald-500/10' : 'text-red-400 bg-red-500/10'} px-2 py-0.5 rounded text-xs font-semibold">${t.type}</span></td>
+                        <td class="py-3 px-3 text-gray-300">$${t.amount}</td>
+                        <td class="py-3 px-3 text-gray-300">$${t.entry}</td>
+                        <td class="py-3 px-3"><button onclick="closeTrade(${t.id})" class="bg-red-500/10 text-red-400 px-3 py-1 rounded-lg text-xs hover:bg-red-500/20 font-medium">Close</button></td>
+                    </tr>
+                `;
+            });
+        }
+
+        function executeTrade(type) {
+            let assetSelect = document.getElementById('tradeAsset');
+            let asset = assetSelect.value;
+            let entryPrice = parseFloat(assetSelect.options[assetSelect.selectedIndex].getAttribute('data-price'));
+            let amount = parseFloat(document.getElementById('tradeAmount').value);
+
+            if(isNaN(amount) || amount <= 0) {
+                alert('Please enter a valid amount.');
+                return;
+            }
+            if(amount > balance) {
+                alert('Insufficient virtual balance!');
+                return;
+            }
+
+            balance -= amount;
+
+            let newTrade = {
+                id: Date.now(),
+                date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+                asset: asset,
+                type: type,
+                entry: entryPrice,
+                exit: '--',
+                amount: amount,
+                pnl: 0,
+                status: 'Active'
+            };
+
+            trades.push(newTrade);
+            localStorage.setItem('tp_balance', balance);
+            localStorage.setItem('tp_trades', JSON.stringify(trades));
+
+            updateUI();
+            alert('Trade placed successfully!');
+        }
+
+        function closeTrade(id) {
+            let trade = trades.find(t => t.id === id);
+            if(trade) {
+                trade.status = 'Closed';
+                // Mock random PnL calculation between -10% to +20% for simulation
+                let randomPct = (Math.random() * 0.3 - 0.1); 
+                trade.pnl = parseFloat((trade.amount * randomPct).toFixed(2));
+                
+                balance += trade.amount + trade.pnl;
+
+                localStorage.setItem('tp_balance', balance);
+                localStorage.setItem('tp_trades', JSON.stringify(trades));
+                updateUI();
+                alert(`Trade closed! Net PnL: ${trade.pnl >= 0 ? '+' : ''}$${trade.pnl}`);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', updateUI);
+    </script>
 </body>
 </html>

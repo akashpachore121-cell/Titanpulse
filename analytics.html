@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TitanPulse - Analytics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { darkBg: '#0b0f19', cardBg: '#111827', cardBorder: '#1f2937' } } }
+        }
+    </script>
+</head>
+<body class="bg-darkBg text-gray-100 font-sans antialiased flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-cardBg border-r border-cardBorder flex flex-col justify-between hidden md:flex">
+        <div>
+            <div class="p-6 border-b border-cardBorder flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-blue-600 to-indigo-500 p-2.5 rounded-xl shadow-lg"><i class="fa-solid fa-bolt text-white text-lg"></i></div>
+                <h1 class="font-extrabold text-xl tracking-wider text-white">TITAN<span class="text-blue-500">PULSE</span></h1>
+            </div>
+            <nav class="p-4 space-y-1.5">
+                <a href="dashboard.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-house w-5"></i><span>Dashboard</span></a>
+                <a href="live-chart.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-chart-line w-5"></i><span>Live Chart</span></a>
+                <a href="demo-trading.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-wallet w-5"></i><span>Demo Trading</span></a>
+                <a href="trade-journal.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-book-open w-5"></i><span>Trade Journal</span></a>
+                <a href="analytics.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl bg-blue-600 text-white font-medium shadow-lg shadow-blue-600/30 transition-all"><i class="fa-solid fa-chart-pie w-5"></i><span>Analytics</span></a>
+                <a href="settings.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-gear w-5"></i><span>Settings</span></a>
+            </nav>
+        </div>
+        <div class="p-4 border-t border-cardBorder">
+            <div class="flex items-center justify-between bg-gray-900/50 p-3 rounded-xl border border-gray-800">
+                <div class="flex items-center space-x-3 truncate">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center font-bold text-white shrink-0">TU</div>
+                    <div class="truncate"><p class="text-sm font-semibold text-white truncate">TitanPulse User</p><p class="text-xs text-gray-400 truncate">user@email.com</p></div>
+                </div>
+                <button class="text-gray-400 hover:text-red-400 p-2"><i class="fa-solid fa-right-from-bracket"></i></button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Content -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        <header class="bg-cardBg border-b border-cardBorder h-16 flex items-center justify-between px-6 shrink-0">
+            <h2 class="text-lg font-bold text-white">Performance Analytics</h2>
+        </header>
+        <main class="p-6 space-y-6 max-w-7xl mx-auto w-full">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl">
+                    <p class="text-gray-400 text-sm">Total Profitability</p>
+                    <h3 class="text-2xl font-bold text-emerald-400 mt-2">+24.8%</h3>
+                </div>
+                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl">
+                    <p class="text-gray-400 text-sm">Profit Factor</p>
+                    <h3 class="text-2xl font-bold text-white mt-2">2.14</h3>
+                </div>
+                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl">
+                    <p class="text-gray-400 text-sm">Max Drawdown</p>
+                    <h3 class="text-2xl font-bold text-red-400 mt-2">-4.2%</h3>
+                </div>
+            </div>
+            <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl">
+                <h3 class="font-bold text-white text-base mb-4">Monthly Return Statistics</h3>
+                <div class="h-64 relative">
+                    <canvas id="analyticsChart"></canvas>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        const ctx = document.getElementById('analyticsChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                datasets: [{
+                    label: 'Net P&L ($)',
+                    data: [1200, 1800, -400, 2400, 1900, 3100],
+                    backgroundColor: '#3b82f6',
+                    borderRadius: 6
+                }]
+            },
+            options: {
+                responsive: true, maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#9ca3af' } },
+                    y: { grid: { color: '#1f2937' }, ticks: { color: '#9ca3af' } }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -7,13 +7,10 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
-        tailwind.config = {
-            theme: { extend: { colors: { darkBg: '#0b0f19', cardBg: '#111827', cardBorder: '#1f2937' } } }
-        }
+        tailwind.config = { theme: { extend: { colors: { darkBg: '#0b0f19', cardBg: '#111827', cardBorder: '#1f2937' } } } }
     </script>
 </head>
 <body class="bg-darkBg text-gray-100 font-sans antialiased flex h-screen overflow-hidden">
-    <!-- Sidebar -->
     <aside class="w-64 bg-cardBg border-r border-cardBorder flex flex-col justify-between hidden md:flex">
         <div>
             <div class="p-6 border-b border-cardBorder flex items-center space-x-3">
@@ -35,52 +32,32 @@
                     <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center font-bold text-white shrink-0">TU</div>
                     <div class="truncate"><p class="text-sm font-semibold text-white truncate">TitanPulse User</p><p class="text-xs text-gray-400 truncate">user@email.com</p></div>
                 </div>
-                <button class="text-gray-400 hover:text-red-400 p-2"><i class="fa-solid fa-right-from-bracket"></i></button>
             </div>
         </div>
     </aside>
 
-    <!-- Content -->
     <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
         <header class="bg-cardBg border-b border-cardBorder h-16 flex items-center justify-between px-6 shrink-0">
             <h2 class="text-lg font-bold text-white">Account Settings</h2>
         </header>
         <main class="p-6 space-y-6 max-w-4xl mx-auto w-full">
             <div class="bg-cardBg border border-cardBorder p-6 rounded-2xl space-y-4">
-                <h3 class="font-bold text-white text-base border-b border-gray-800 pb-3">Profile Information</h3>
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <div>
-                        <label class="text-xs text-gray-400 block mb-1">Full Name</label>
-                        <input type="text" value="TitanPulse User" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-sm text-white outline-none">
-                    </div>
-                    <div>
-                        <label class="text-xs text-gray-400 block mb-1">Email Address</label>
-                        <input type="email" value="user@email.com" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-sm text-white outline-none">
-                    </div>
-                </div>
-                <div class="pt-2">
-                    <button class="bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition shadow-lg shadow-blue-600/20">Save Changes</button>
-                </div>
-            </div>
-
-            <div class="bg-cardBg border border-cardBorder p-6 rounded-2xl space-y-4">
-                <h3 class="font-bold text-white text-base border-b border-gray-800 pb-3">Preferences</h3>
-                <div class="flex items-center justify-between">
-                    <div>
-                        <p class="text-sm font-medium text-white">Dark Mode Theme</p>
-                        <p class="text-xs text-gray-400">Optimized high-contrast dark layout</p>
-                    </div>
-                    <input type="checkbox" checked class="w-5 h-5 accent-blue-600 rounded">
-                </div>
-                <div class="flex items-center justify-between pt-3">
-                    <div>
-                        <p class="text-sm font-medium text-white">Email Trade Alerts</p>
-                        <p class="text-xs text-gray-400">Receive instant updates on open positions</p>
-                    </div>
-                    <input type="checkbox" checked class="w-5 h-5 accent-blue-600 rounded">
-                </div>
+                <h3 class="font-bold text-white text-base border-b border-gray-800 pb-3">Reset Demo Data</h3>
+                <p class="text-sm text-gray-400">Agar aapko apna sara balance aur trade journal reset karna hai, toh niche diye gaye button par click karein.</p>
+                <button onclick="resetData()" class="bg-red-600 hover:bg-red-500 text-white text-sm font-semibold px-5 py-2.5 rounded-xl transition shadow-lg shadow-red-600/20">Reset Account</button>
             </div>
         </main>
     </div>
+
+    <script>
+        function resetData() {
+            if(confirm('Kya aap apne saare trades aur balance ko reset karna chahte hain?')) {
+                localStorage.removeItem('tp_balance');
+                localStorage.removeItem('tp_trades');
+                alert('Account reset ho gaya hai!');
+                location.reload();
+            }
+        }
+    </script>
 </body>
 </html>

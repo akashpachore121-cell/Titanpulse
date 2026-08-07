@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TitanPulse - Trade Journal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: { extend: { colors: { darkBg: '#0b0f19', cardBg: '#111827', cardBorder: '#1f2937' } } }
+        }
+    </script>
+</head>
+<body class="bg-darkBg text-gray-100 font-sans antialiased flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-cardBg border-r border-cardBorder flex flex-col justify-between hidden md:flex">
+        <div>
+            <div class="p-6 border-b border-cardBorder flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-blue-600 to-indigo-500 p-2.5 rounded-xl shadow-lg"><i class="fa-solid fa-bolt text-white text-lg"></i></div>
+                <h1 class="font-extrabold text-xl tracking-wider text-white">TITAN<span class="text-blue-500">PULSE</span></h1>
+            </div>
+            <nav class="p-4 space-y-1.5">
+                <a href="dashboard.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-house w-5"></i><span>Dashboard</span></a>
+                <a href="live-chart.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-chart-line w-5"></i><span>Live Chart</span></a>
+                <a href="demo-trading.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-wallet w-5"></i><span>Demo Trading</span></a>
+                <a href="trade-journal.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl bg-blue-600 text-white font-medium shadow-lg shadow-blue-600/30 transition-all"><i class="fa-solid fa-book-open w-5"></i><span>Trade Journal</span></a>
+                <a href="analytics.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-chart-pie w-5"></i><span>Analytics</span></a>
+                <a href="settings.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-gear w-5"></i><span>Settings</span></a>
+            </nav>
+        </div>
+        <div class="p-4 border-t border-cardBorder">
+            <div class="flex items-center justify-between bg-gray-900/50 p-3 rounded-xl border border-gray-800">
+                <div class="flex items-center space-x-3 truncate">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center font-bold text-white shrink-0">TU</div>
+                    <div class="truncate"><p class="text-sm font-semibold text-white truncate">TitanPulse User</p><p class="text-xs text-gray-400 truncate">user@email.com</p></div>
+                </div>
+                <button class="text-gray-400 hover:text-red-400 p-2"><i class="fa-solid fa-right-from-bracket"></i></button>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Content -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        <header class="bg-cardBg border-b border-cardBorder h-16 flex items-center justify-between px-6 shrink-0">
+            <h2 class="text-lg font-bold text-white">Trade Journal & Logs</h2>
+            <button class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-4 py-2 rounded-xl transition shadow-lg shadow-blue-600/20">
+                <i class="fa-solid fa-plus mr-1"></i> Add Manual Entry
+            </button>
+        </header>
+        <main class="p-6 space-y-6 max-w-7xl mx-auto w-full">
+            <div class="bg-cardBg border border-cardBorder rounded-2xl p-5">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-white text-base">Complete Trade History</h3>
+                    <input type="text" placeholder="Search asset..." class="bg-gray-900 border border-gray-800 rounded-lg px-3 py-1.5 text-xs text-white outline-none">
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-800 text-gray-400 text-xs uppercase">
+                                <th class="py-3 px-4">Date</th>
+                                <th class="py-3 px-4">Asset</th>
+                                <th class="py-3 px-4">Position</th>
+                                <th class="py-3 px-4">Entry</th>
+                                <th class="py-3 px-4">Exit</th>
+                                <th class="py-3 px-4">Net P&L</th>
+                                <th class="py-3 px-4">Emotion/Notes</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800/50 text-gray-300">
+                            <tr>
+                                <td class="py-3 px-4 text-xs text-gray-400">07 Apr 2026</td>
+                                <td class="py-3 px-4 font-semibold text-white">BTC/USDT</td>
+                                <td class="py-3 px-4"><span class="text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded text-xs">LONG</span></td>
+                                <td class="py-3 px-4">$63,100</td>
+                                <td class="py-3 px-4">$64,200</td>
+                                <td class="py-3 px-4 text-emerald-400 font-bold">+$1,100.00</td>
+                                <td class="py-3 px-4 text-xs italic text-gray-400">Good breakout trade</td>
+                            </tr>
+                            <tr>
+                                <td class="py-3 px-4 text-xs text-gray-400">06 Apr 2026</td>
+                                <td class="py-3 px-4 font-semibold text-white">ETH/USDT</td>
+                                <td class="py-3 px-4"><span class="text-red-400 bg-red-500/10 px-2 py-0.5 rounded text-xs">SHORT</span></td>
+                                <td class="py-3 px-4">$3,520</td>
+                                <td class="py-3 px-4">$3,480</td>
+                                <td class="py-3 px-4 text-emerald-400 font-bold">+$320.50</td>
+                                <td class="py-3 px-4 text-xs italic text-gray-400">Followed resistance level</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

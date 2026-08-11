@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TitanPulse - Dashboard</title>
+    <title>TitanPulse - Pro Trading Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -22,12 +22,13 @@
                 </div>
                 <h1 class="font-extrabold text-xl tracking-wider text-white">TITAN<span class="text-blue-500">PULSE</span></h1>
             </div>
-            <nav class="p-4 space-y-1.5">
+            <nav class="p-4 space-y-1.5 text-sm">
                 <a href="dashboard.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl bg-blue-600 text-white font-medium shadow-lg shadow-blue-600/30 transition-all"><i class="fa-solid fa-house w-5"></i><span>Dashboard</span></a>
                 <a href="live-chart.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-chart-line w-5"></i><span>Live Chart</span></a>
                 <a href="demo-trading.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-wallet w-5"></i><span>Demo Trading</span></a>
                 <a href="trade-journal.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-book-open w-5"></i><span>Trade Journal</span></a>
                 <a href="analytics.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-chart-pie w-5"></i><span>Analytics</span></a>
+                <a href="ai-coach.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-brain w-5"></i><span>AI Coach</span></a>
                 <a href="settings.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-gear w-5"></i><span>Settings</span></a>
             </nav>
         </div>
@@ -45,25 +46,28 @@
     <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
         <header class="bg-cardBg border-b border-cardBorder h-16 flex items-center justify-between px-6 shrink-0">
             <h2 class="text-lg font-bold text-white">Overview Dashboard</h2>
-            <div class="flex items-center space-x-3">
+            <div class="flex items-center space-x-4">
                 <div class="hidden sm:flex items-center bg-gray-900 px-3 py-1.5 rounded-lg border border-gray-800 text-xs text-emerald-400 space-x-2">
                     <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
                     <span>Market Live: Connected</span>
+                </div>
+                <div class="bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-xl text-emerald-400 font-bold text-sm">
+                    ₹<span id="headerBalance">8,50,000.00</span>
                 </div>
             </div>
         </header>
 
         <main class="p-6 space-y-6 max-w-7xl mx-auto w-full">
-            <!-- Stats Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Stats Grid with AI Discipline Index -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                 <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl">
                     <span class="text-gray-400 text-sm font-medium">Portfolio Balance</span>
-                    <h3 id="dashBalance" class="text-2xl font-bold text-white mt-2">$10,000.00</h3>
+                    <h3 id="dashBalance" class="text-2xl font-bold text-white mt-2">₹8,50,000.00</h3>
                     <p class="text-emerald-400 text-xs mt-1 font-semibold">Virtual Funds</p>
                 </div>
                 <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl">
                     <span class="text-gray-400 text-sm font-medium">Total P&L</span>
-                    <h3 id="dashPnL" class="text-2xl font-bold text-emerald-400 mt-2">+$0.00</h3>
+                    <h3 id="dashPnL" class="text-2xl font-bold text-emerald-400 mt-2">+₹0.00</h3>
                     <p class="text-gray-400 text-xs mt-1">Real-time update</p>
                 </div>
                 <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl">
@@ -72,9 +76,16 @@
                     <p class="text-purple-400 text-xs mt-1">From Demo Terminal</p>
                 </div>
                 <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl">
-                    <span class="text-gray-400 text-sm font-medium">Total Trades Executed</span>
+                    <span class="text-gray-400 text-sm font-medium">Total Trades</span>
                     <h3 id="dashTotalTrades" class="text-2xl font-bold text-white mt-2">0</h3>
                     <p class="text-gray-400 text-xs mt-1">Journal Logged</p>
+                </div>
+                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl flex flex-col justify-between">
+                    <div>
+                        <span class="text-gray-400 text-sm font-medium">AI Discipline</span>
+                        <h3 id="dashDiscipline" class="text-2xl font-bold text-purple-400 mt-2">88%</h3>
+                    </div>
+                    <a href="ai-coach.html" class="text-xs text-blue-400 hover:underline mt-2 inline-block font-semibold"><i class="fa-solid fa-brain mr-1"></i> View Coach →</a>
                 </div>
             </div>
 
@@ -88,39 +99,88 @@
                     <h3 class="font-bold text-white text-base mb-4">Market Watchlist</h3>
                     <div class="space-y-3">
                         <div class="flex items-center justify-between p-3 rounded-xl bg-gray-900/40 border border-gray-800">
-                            <span class="font-semibold text-white">BTC</span>
-                            <span class="text-emerald-400 font-medium">$64,250.00</span>
+                            <span class="font-semibold text-white">BTC/USDT</span>
+                            <span class="text-emerald-400 font-medium">₹64,25,000</span>
                         </div>
                         <div class="flex items-center justify-between p-3 rounded-xl bg-gray-900/40 border border-gray-800">
-                            <span class="font-semibold text-white">ETH</span>
-                            <span class="text-emerald-400 font-medium">$3,480.20</span>
+                            <span class="font-semibold text-white">ETH/USDT</span>
+                            <span class="text-emerald-400 font-medium">₹3,48,000</span>
                         </div>
                         <div class="flex items-center justify-between p-3 rounded-xl bg-gray-900/40 border border-gray-800">
-                            <span class="font-semibold text-white">SOL</span>
-                            <span class="text-red-400 font-medium">$142.10</span>
+                            <span class="font-semibold text-white">USD/INR</span>
+                            <span class="text-blue-400 font-medium">₹83.25</span>
                         </div>
                     </div>
+                </div>
+            </div>
+
+            <!-- Recent Portfolio Activity Table -->
+            <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl space-y-4">
+                <h3 class="font-bold text-white text-base">Recent Portfolio Activity</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead>
+                            <tr class="border-b border-gray-800 text-gray-400 text-xs uppercase">
+                                <th class="py-3 px-3">Date</th>
+                                <th class="py-3 px-3">Asset</th>
+                                <th class="py-3 px-3">Setup</th>
+                                <th class="py-3 px-3">Type</th>
+                                <th class="py-3 px-3">Margin</th>
+                                <th class="py-3 px-3">Status / PnL</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dashTableBody" class="divide-y divide-gray-800/50"></tbody>
+                    </table>
                 </div>
             </div>
         </main>
     </div>
 
     <script>
-        // Load data from LocalStorage
         window.addEventListener('DOMContentLoaded', () => {
-            const balance = parseFloat(localStorage.getItem('tp_balance')) || 10000.00;
+            const balance = parseFloat(localStorage.getItem('tp_balance')) || 850000.00;
             const trades = JSON.parse(localStorage.getItem('tp_trades')) || [];
             
-            document.getElementById('dashBalance').innerText = '$' + balance.toLocaleString('en-US', {minimumFractionDigits: 2});
+            document.getElementById('headerBalance').innerText = balance.toLocaleString('en-IN', {minimumFractionDigits: 2});
+            document.getElementById('dashBalance').innerText = '₹' + balance.toLocaleString('en-IN', {minimumFractionDigits: 2});
             document.getElementById('dashTotalTrades').innerText = trades.length;
 
             let openCount = trades.filter(t => t.status === 'Active').length;
             document.getElementById('dashOpenCount').innerText = openCount + ' Active';
 
-            let totalPnL = trades.reduce((acc, t) => acc + (t.pnl || 0), 0);
+            let totalPnL = trades.reduce((acc, t) => acc + (t.status === 'Closed' ? (t.pnl || 0) : (t.livePnL || 0)), 0);
             const pnlEl = document.getElementById('dashPnL');
-            pnlEl.innerText = (totalPnL >= 0 ? '+$' : '-$') + Math.abs(totalPnL).toFixed(2);
+            pnlEl.innerText = (totalPnL >= 0 ? '+₹' : '-₹') + Math.abs(totalPnL).toLocaleString('en-IN', {minimumFractionDigits: 2});
             pnlEl.className = `text-2xl font-bold mt-2 ${totalPnL >= 0 ? 'text-emerald-400' : 'text-red-400'}`;
+
+            // Calculate Discipline Score
+            let violations = trades.filter(t => t.psychology === 'FOMO Entry' || t.psychology === 'Revenge Trading' || t.psychology === 'Overleveraging').length;
+            let score = Math.max(40, 100 - (violations * 15));
+            document.getElementById('dashDiscipline').innerText = score + '%';
+
+            // Populate Recent Activity Table
+            let tbody = document.getElementById('dashTableBody');
+            tbody.innerHTML = '';
+            if(trades.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-gray-500 text-xs">No recent trades found in journal.</td></tr>`;
+            } else {
+                trades.slice(-5).reverse().forEach(t => {
+                    let badge = t.status === 'Active' 
+                        ? `<span class="bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded text-xs font-semibold">Active</span>`
+                        : `<span class="${(t.pnl || 0) >= 0 ? 'text-emerald-400 bg-emerald-500/10' : 'text-red-400 bg-red-500/10'} px-2 py-0.5 rounded text-xs font-semibold">${(t.pnl || 0) >= 0 ? '+' : ''}₹${Math.abs(t.pnl || 0).toLocaleString('en-IN')}</span>`;
+
+                    tbody.innerHTML += `
+                        <tr class="hover:bg-gray-800/30 transition">
+                            <td class="py-3 px-3 text-xs text-gray-400">${t.date || 'Today'}</td>
+                            <td class="py-3 px-3 font-semibold text-white">${t.asset}</td>
+                            <td class="py-3 px-3 text-xs text-blue-400">${t.setup || 'Breakout'}</td>
+                            <td class="py-3 px-3"><span class="${t.type === 'LONG' ? 'text-emerald-400 bg-emerald-500/10' : 'text-red-400 bg-red-500/10'} px-2 py-0.5 rounded text-xs font-semibold">${t.type}</span></td>
+                            <td class="py-3 px-3 text-gray-300">₹${t.amount.toLocaleString('en-IN')}</td>
+                            <td class="py-3 px-3">${badge}</td>
+                        </tr>
+                    `;
+                });
+            }
         });
 
         const ctx = document.getElementById('mainChart').getContext('2d');
@@ -129,7 +189,7 @@
             data: {
                 labels: ['10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00'],
                 datasets: [{
-                    data: [63200, 63500, 63100, 63800, 63650, 64000, 64250],
+                    data: [6320000, 6350000, 6310000, 6380000, 6365000, 6400000, 6425000],
                     borderColor: '#3b82f6', backgroundColor: 'rgba(59, 130, 246, 0.05)', borderWidth: 2, fill: true, tension: 0.4
                 }]
             },

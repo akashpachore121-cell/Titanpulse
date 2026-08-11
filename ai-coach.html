@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TitanPulse - AI Coach & Trading Psychology</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = { theme: { extend: { colors: { darkBg: '#0b0f19', cardBg: '#111827', cardBorder: '#1f2937' } } } }
+    </script>
+</head>
+<body class="bg-darkBg text-gray-100 font-sans antialiased flex h-screen overflow-hidden">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-cardBg border-r border-cardBorder flex flex-col justify-between hidden md:flex shrink-0">
+        <div>
+            <div class="p-6 border-b border-cardBorder flex items-center space-x-3">
+                <div class="bg-gradient-to-tr from-blue-600 to-indigo-500 p-2.5 rounded-xl shadow-lg"><i class="fa-solid fa-bolt text-white text-lg"></i></div>
+                <h1 class="font-extrabold text-xl tracking-wider text-white">TITAN<span class="text-blue-500">PULSE</span></h1>
+            </div>
+            <nav class="p-4 space-y-1.5 text-sm">
+                <a href="dashboard.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-house w-5"></i><span>Dashboard</span></a>
+                <a href="live-chart.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-chart-line w-5"></i><span>Live Chart</span></a>
+                <a href="demo-trading.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-wallet w-5"></i><span>Demo Trading</span></a>
+                <a href="trade-journal.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-book-open w-5"></i><span>Trade Journal</span></a>
+                <a href="analytics.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-chart-pie w-5"></i><span>PNL Analytics</span></a>
+                <a href="ai-coach.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl bg-blue-600 text-white font-medium shadow-lg shadow-blue-600/30 transition-all"><i class="fa-solid fa-brain w-5"></i><span>AI Coach</span></a>
+                <a href="settings.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-gear w-5"></i><span>Settings</span></a>
+            </nav>
+        </div>
+        <div class="p-4 border-t border-cardBorder">
+            <div class="flex items-center justify-between bg-gray-900/50 p-3 rounded-xl border border-gray-800">
+                <div class="flex items-center space-x-3 truncate">
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center font-bold text-white shrink-0">TP</div>
+                    <div class="truncate"><p class="text-sm font-semibold text-white truncate">Pro Trader</p><p class="text-xs text-gray-400 truncate">Indore, India</p></div>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        <header class="bg-cardBg border-b border-cardBorder h-16 flex items-center justify-between px-6 shrink-0">
+            <span class="font-bold text-white tracking-wide text-sm flex items-center space-x-2">
+                <i class="fa-solid fa-robot text-blue-400"></i>
+                <span>AI TRADING PSYCHOLOGY & COACH</span>
+            </span>
+            <div class="flex items-center space-x-4">
+                <div class="bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-xl text-emerald-400 font-bold text-sm">
+                    ₹<span id="headerBalance">8,50,000.00</span>
+                </div>
+            </div>
+        </header>
+
+        <main class="p-6 space-y-6 max-w-7xl mx-auto w-full">
+            
+            <!-- AI Health Overview Banner -->
+            <div class="bg-gradient-to-r from-blue-900/40 via-cardBg to-purple-900/40 border border-blue-500/30 p-6 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-2">
+                    <div class="inline-flex items-center space-x-2 bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-xs font-semibold">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>AI Behavioral Engine Active</span>
+                    </div>
+                    <h2 class="text-2xl font-extrabold text-white">Your Emotional Discipline Score</h2>
+                    <p class="text-sm text-gray-300 max-w-xl">Based on your recent trade journal entries, emotional discipline guardrails are active to protect your capital from FOMO and revenge cycles.</p>
+                </div>
+                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl text-center shrink-0 w-44 shadow-inner">
+                    <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Discipline Index</p>
+                    <p id="disciplineScore" class="text-4xl font-extrabold text-emerald-400">88%</p>
+                </div>
+            </div>
+
+            <!-- Insights Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <!-- Card 1: Top Mistake Detected -->
+                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-white text-sm">Primary Behavioral Leak</h3>
+                        <i class="fa-solid fa-triangle-exclamation text-amber-400"></i>
+                    </div>
+                    <p id="primaryMistake" class="text-lg font-bold text-amber-400">Analyzing tags...</p>
+                    <p class="text-xs text-gray-400">Trades logged with emotional tags show a 22% lower average return compared to disciplined entries.</p>
+                </div>
+
+                <!-- Card 2: Most Profitable Setup -->
+                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-white text-sm">Top Performing Setup</h3>
+                        <i class="fa-solid fa-trophy text-emerald-400"></i>
+                    </div>
+                    <p id="bestSetup" class="text-lg font-bold text-emerald-400">Breakout Strategy</p>
+                    <p class="text-xs text-gray-400">Your win rate on this setup is highest during the Morning Session.</p>
+                </div>
+
+                <!-- Card 3: AI Recommendation -->
+                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="font-bold text-white text-sm">AI Guardrail Status</h3>
+                        <i class="fa-solid fa-lock text-blue-400"></i>
+                    </div>
+                    <p class="text-lg font-bold text-blue-400">Normal Operations</p>
+                    <p class="text-xs text-gray-400">No emergency lock triggered. Stick to your stop loss rules.</p>
+                </div>
+
+            </div>
+
+            <!-- Detailed AI Audit Log -->
+            <div class="bg-cardBg border border-cardBorder p-6 rounded-2xl space-y-4">
+                <div class="flex items-center justify-between pb-3 border-b border-gray-800">
+                    <h3 class="font-bold text-white text-base">Recent Trade Psychology Audit</h3>
+                    <button onclick="runAiAudit()" class="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-xl text-xs font-semibold transition shadow">
+                        <i class="fa-solid fa-rotate mr-1.5"></i> Run AI Scan
+                    </button>
+                </div>
+                <div id="aiAuditContent" class="space-y-3">
+                    <!-- Dynamic Audit Entries -->
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Script to Analyze LocalStorage Trades -->
+    <script>
+        let balance = parseFloat(localStorage.getItem('tp_balance')) || 850000.00;
+        let trades = JSON.parse(localStorage.getItem('tp_trades')) || [];
+        document.getElementById('headerBalance').innerText = balance.toLocaleString('en-IN', {minimumFractionDigits: 2});
+
+        function runAiAudit() {
+            let auditBox = document.getElementById('aiAuditContent');
+            auditBox.innerHTML = '<p class="text-xs text-blue-400 animate-pulse">Scanning trade journal history and psychological tags...</p>';
+
+            setTimeout(() => {
+                auditBox.innerHTML = '';
+                if(trades.length === 0) {
+                    auditBox.innerHTML = `<p class="text-xs text-gray-500">No trades found in journal to analyze. Place some demo trades first!</p>`;
+                    return;
+                }
+
+                // Count psychology tags
+                let tagCounts = {};
+                trades.forEach(t => {
+                    let tag = t.psychology || 'Followed Rules';
+                    tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+                });
+
+                // Find most common tag
+                let sortedTags = Object.keys(tagCounts).sort((a,b) => tagCounts[b] - tagCounts[a]);
+                let topMistake = sortedTags[0] || 'Followed Rules';
+                document.getElementById('primaryMistake').innerText = topMistake;
+
+                // Adjust discipline score based on violations
+                let violations = (tagCounts['FOMO Entry'] || 0) + (tagCounts['Revenge Trading'] || 0) + (tagCounts['Overleveraging'] || 0);
+                let score = Math.max(40, 100 - (violations * 15));
+                document.getElementById('disciplineScore').innerText = score + '%';
+                document.getElementById('disciplineScore').className = `text-4xl font-extrabold ${score >= 70 ? 'text-emerald-400' : 'text-amber-400'}`;
+
+                // Render audit items
+                trades.slice(-5).reverse().forEach(t => {
+                    let iconColor = t.psychology === 'Followed Rules' ? 'text-emerald-400 bg-emerald-500/10' : 'text-amber-400 bg-amber-500/10';
+                    auditBox.innerHTML += `
+                        <div class="bg-gray-900/60 border border-gray-800 p-3.5 rounded-xl flex items-center justify-between text-xs">
+                            <div class="space-y-1">
+                                <div class="flex items-center space-x-2">
+                                    <span class="font-bold text-white">${t.asset} (${t.type})</span>
+                                    <span class="text-gray-400">Setup: ${t.setup || 'General'}</span>
+                                </div>
+                                <p class="text-gray-400">Tagged State: <span class="font-semibold ${iconColor} px-2 py-0.5 rounded">${t.psychology || 'Followed Rules'}</span></p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-gray-500">${t.date || 'Today'}</span>
+                            </div>
+                        </div>
+                    `;
+                });
+            }, 600);
+        }
+
+        window.addEventListener('DOMContentLoaded', runAiAudit);
+    </script>
+</body>
+</html>

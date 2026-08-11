@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TitanPulse - Trade Journal with Setups</title>
+    <title>TitanPulse - Advanced Institutional Trade Journal</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -40,7 +40,7 @@
     <!-- Main Content -->
     <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
         <header class="bg-cardBg border-b border-cardBorder h-16 flex items-center justify-between px-6 shrink-0">
-            <span class="font-bold text-white tracking-wide text-sm">TRADE JOURNAL (WITH SETUP ANALYSIS)</span>
+            <span class="font-bold text-white tracking-wide text-sm">INSTITUTIONAL TRADE JOURNAL (ALL METRICS)</span>
             <div class="flex items-center space-x-4">
                 <div class="bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-xl text-emerald-400 font-bold text-sm">
                     ₹<span id="headerBalance">8,50,000.00</span>
@@ -56,12 +56,12 @@
                             <tr class="border-b border-gray-800 text-gray-400 text-xs uppercase">
                                 <th class="py-3 px-3">Date</th>
                                 <th class="py-3 px-3">Asset</th>
-                                <th class="py-3 px-3">Trading Setup</th>
-                                <th class="py-3 px-3">Type</th>
-                                <th class="py-3 px-3">Margin (₹)</th>
-                                <th class="py-3 px-3">Entry</th>
+                                <th class="py-3 px-3">Setup / Session</th>
+                                <th class="py-3 px-3">RRR</th>
+                                <th class="py-3 px-3">Psychology Tag</th>
+                                <th class="py-3 px-3">Margin</th>
                                 <th class="py-3 px-3">Status / PnL</th>
-                                <th class="py-3 px-3 text-right">Action</th>
+                                <th class="py-3 px-3 text-right">Chart / Action</th>
                             </tr>
                         </thead>
                         <tbody id="journalTableBody" class="divide-y divide-gray-800/50"></tbody>
@@ -88,17 +88,20 @@
                     ? `<span class="bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded text-xs font-semibold">Active</span>`
                     : `<span class="${(t.pnl || 0) >= 0 ? 'text-emerald-400 bg-emerald-500/10' : 'text-red-400 bg-red-500/10'} px-2 py-0.5 rounded text-xs font-semibold">${(t.pnl || 0) >= 0 ? '+' : ''}₹${Math.abs(t.pnl || 0).toLocaleString('en-IN')}</span>`;
 
+                let screenshotLink = t.screenshot ? `<a href="${t.screenshot}" target="_blank" class="text-blue-400 underline text-xs">View Chart</a>` : '<span class="text-gray-600 text-xs">No Link</span>';
+
                 tbody.innerHTML += `
                     <tr class="hover:bg-gray-800/30 transition">
                         <td class="py-3 px-3 text-xs text-gray-400">${t.date || 'Today'}</td>
-                        <td class="py-3 px-3 font-semibold text-white">${t.asset}</td>
-                        <td class="py-3 px-3 text-xs text-blue-400 font-bold bg-blue-500/10 px-2 py-1 rounded w-fit">${t.setup || 'General'}</td>
-                        <td class="py-3 px-3"><span class="${t.type === 'LONG' ? 'text-emerald-400 bg-emerald-500/10' : 'text-red-400 bg-red-500/10'} px-2 py-0.5 rounded text-xs font-semibold">${t.type}</span></td>
+                        <td class="py-3 px-3 font-semibold text-white">${t.asset}<br><span class="text-xs ${t.type === 'LONG'?'text-emerald-400':'text-red-400'}">${t.type}</span></td>
+                        <td class="py-3 px-3 text-xs"><span class="text-blue-400 font-bold">${t.setup || 'Breakout'}</span><br><span class="text-gray-500">${t.session || 'Morning'}</span></td>
+                        <td class="py-3 px-3 text-xs text-purple-400 font-semibold">${t.rrr || 'N/A'}</td>
+                        <td class="py-3 px-3 text-xs text-amber-400 font-medium">${t.psychology || 'Followed Rules'}</td>
                         <td class="py-3 px-3 text-gray-300">₹${t.amount.toLocaleString('en-IN')}</td>
-                        <td class="py-3 px-3 text-gray-300">₹${t.entry.toLocaleString('en-IN')}</td>
                         <td class="py-3 px-3">${badge}</td>
-                        <td class="py-3 px-3 text-right">
-                            ${t.status === 'Active' ? `<button onclick="closeJournalTrade(${t.id})" class="bg-red-500/10 text-red-400 px-3 py-1 rounded-lg text-xs font-medium">Close</button>` : `<span class="text-xs text-gray-500">Done</span>`}
+                        <td class="py-3 px-3 text-right space-y-1">
+                            <div>${screenshotLink}</div>
+                            ${t.status === 'Active' ? `<button onclick="closeJournalTrade(${t.id})" class="bg-red-500/10 text-red-400 px-2 py-0.5 rounded text-xs font-medium">Close</button>` : `<span class="text-xs text-gray-500">Done</span>`}
                         </td>
                     </tr>
                 `;

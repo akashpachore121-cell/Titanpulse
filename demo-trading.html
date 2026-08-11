@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TitanPulse - TradingView Terminal</title>
+    <title>TitanPulse - TradingView Pro Terminal with Live P&L</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -12,7 +12,7 @@
 </head>
 <body class="bg-darkBg text-gray-100 font-sans antialiased flex h-screen overflow-hidden">
     <!-- Sidebar -->
-    <aside class="w-64 bg-cardBg border-r border-cardBorder flex flex-col justify-between hidden md:flex">
+    <aside class="w-64 bg-cardBg border-r border-cardBorder flex flex-col justify-between hidden md:flex shrink-0">
         <div>
             <div class="p-6 border-b border-cardBorder flex items-center space-x-3">
                 <div class="bg-gradient-to-tr from-blue-600 to-indigo-500 p-2.5 rounded-xl shadow-lg"><i class="fa-solid fa-bolt text-white text-lg"></i></div>
@@ -46,23 +46,31 @@
             </div>
         </header>
 
-        <main class="p-6 space-y-6 max-w-7xl mx-auto w-full">
-            <!-- Top Section: TradingView Widget + Order Form -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <main class="p-6 space-y-6 max-w-full mx-auto w-full flex-1 flex flex-col">
+            <!-- Top Section: TradingView Chart + Order Form -->
+            <div class="grid grid-cols-1 xl:grid-cols-5 gap-6 flex-1">
                 
-                <!-- TradingView Widget Container (2 Columns) -->
-                <div class="lg:col-span-2 bg-cardBg border border-cardBorder p-4 rounded-2xl flex flex-col">
+                <!-- TradingView Widget Container (4 Columns) -->
+                <div id="chartContainerBox" class="xl:col-span-4 bg-cardBg border border-cardBorder p-4 rounded-2xl flex flex-col">
                     <div class="flex items-center justify-between mb-3">
-                        <select id="tradeAsset" class="bg-gray-900 border border-gray-800 rounded-lg px-3 py-1.5 text-sm font-bold text-white outline-none">
-                            <option value="BINANCE:BTCUSDT" data-price="6425000">BTC/USDT</option>
-                            <option value="BINANCE:ETHUSDT" data-price="348000">ETH/USDT</option>
-                            <option value="FX:USDINR" data-price="83.25">USD/INR [Forex]</option>
-                        </select>
-                        <span class="text-xs text-gray-400"><i class="fa-solid fa-circle text-emerald-500 text-[8px] mr-1"></i> Powered by TradingView</span>
+                        <div class="flex items-center space-x-3">
+                            <select id="tradeAsset" class="bg-gray-900 border border-gray-800 rounded-lg px-3 py-1.5 text-sm font-bold text-white outline-none">
+                                <option value="BINANCE:BTCUSDT" data-price="6425000">BTC/USDT (₹64,25,000)</option>
+                                <option value="BINANCE:ETHUSDT" data-price="348000">ETH/USDT (₹3,48,000)</option>
+                                <option value="FX:USDINR" data-price="83.25">USD/INR [Forex] (₹83.25)</option>
+                            </select>
+                            <span class="text-xs text-gray-400 hidden sm:inline"><i class="fa-solid fa-circle text-emerald-500 text-[8px] mr-1"></i> Live TradingView Feed</span>
+                        </div>
+                        
+                        <!-- Fullscreen Toggle Button -->
+                        <button onclick="toggleFullview()" class="bg-gray-800 hover:bg-gray-700 text-gray-300 px-3 py-1.5 rounded-lg text-xs font-semibold flex items-center space-x-1.5 transition">
+                            <i id="fullviewIcon" class="fa-solid fa-expand text-blue-400"></i>
+                            <span id="fullviewText">Fullview</span>
+                        </button>
                     </div>
 
-                    <!-- TradingView Widget BEGIN -->
-                    <div class="tradingview-widget-container h-[400px] w-full">
+                    <!-- TradingView Widget -->
+                    <div class="tradingview-widget-container h-[600px] w-full flex-1">
                         <div class="tradingview-widget-container__widget h-full w-full"></div>
                         <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js" async>
                         {
@@ -80,20 +88,29 @@
                         }
                         </script>
                     </div>
-                    <!-- TradingView Widget END -->
                 </div>
 
-                <!-- Order Placement Form (1 Column) -->
-                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl space-y-4 flex flex-col justify-between">
+                <!-- Order Form with SL & TP (1 Column) -->
+                <div class="xl:col-span-1 bg-cardBg border border-cardBorder p-5 rounded-2xl space-y-4 flex flex-col justify-between">
                     <div>
                         <h3 class="font-bold text-white text-base mb-3 flex items-center justify-between">
                             <span>Place Order</span>
-                            <i class="fa-solid fa-sliders text-gray-400 text-xs"></i>
+                            <i class="fa-solid fa-shield-halved text-blue-400 text-xs"></i>
                         </h3>
                         <div class="space-y-3">
                             <div>
                                 <label class="text-xs text-gray-400 block mb-1">Margin Amount (INR ₹)</label>
-                                <input type="number" id="tradeAmount" value="25000" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-sm text-white outline-none focus:border-blue-500">
+                                <input type="number" id="tradeAmount" value="25000" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2.5 text-sm text-white outline-none">
+                            </div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="text-xs text-red-400 block mb-1">Stop Loss (SL)</label>
+                                    <input type="number" id="stopLossPrice" placeholder="Optional" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2 text-sm text-white outline-none">
+                                </div>
+                                <div>
+                                    <label class="text-xs text-emerald-400 block mb-1">Target (TP)</label>
+                                    <input type="number" id="targetPrice" placeholder="Optional" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-2 text-sm text-white outline-none">
+                                </div>
                             </div>
                             <div>
                                 <label class="text-xs text-gray-400 block mb-1">Leverage</label>
@@ -113,11 +130,11 @@
                 </div>
             </div>
 
-            <!-- Bottom Section: Active Positions -->
+            <!-- Bottom Section: Active Positions with Real-Time P&L -->
             <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl">
                 <h3 class="font-bold text-white text-base mb-4 flex items-center space-x-2">
                     <i class="fa-solid fa-layer-group text-purple-400"></i>
-                    <span>Active Virtual Positions</span>
+                    <span>Active Virtual Positions (Live P&L Tracking)</span>
                 </h3>
                 <div class="overflow-x-auto">
                     <table class="w-full text-left text-sm">
@@ -127,7 +144,8 @@
                                 <th class="py-3 px-3">Type</th>
                                 <th class="py-3 px-3">Margin Size</th>
                                 <th class="py-3 px-3">Entry Price</th>
-                                <th class="py-3 px-3">Status</th>
+                                <th class="py-3 px-3">SL / TP</th>
+                                <th class="py-3 px-3">Live P&L</th>
                                 <th class="py-3 px-3 text-right">Action</th>
                             </tr>
                         </thead>
@@ -140,10 +158,49 @@
         </main>
     </div>
 
-    <!-- Script for LocalStorage & Trade Execution -->
+    <!-- Script -->
     <script>
         let balance = parseFloat(localStorage.getItem('tp_balance')) || 850000.00;
         let trades = JSON.parse(localStorage.getItem('tp_trades')) || [];
+
+        function toggleFullview() {
+            let box = document.getElementById('chartContainerBox');
+            let icon = document.getElementById('fullviewIcon');
+            let text = document.getElementById('fullviewText');
+
+            if (!document.fullscreenElement) {
+                box.requestFullscreen().catch(err => {
+                    alert(`Error attempting fullscreen: ${err.message}`);
+                });
+                icon.className = "fa-solid fa-compress text-blue-400";
+                text.innerText = "Exit Fullview";
+            } else {
+                document.exitFullscreen();
+                icon.className = "fa-solid fa-expand text-blue-400";
+                text.innerText = "Fullview";
+            }
+        }
+
+        // Live P&L Ticker Loop
+        setInterval(() => {
+            let hasActive = false;
+            trades.forEach(t => {
+                if(t.status === 'Active') {
+                    hasActive = true;
+                    let randomChange = (Math.random() - 0.48) * (t.entry * 0.002);
+                    t.currentPrice = (t.currentPrice || t.entry) + randomChange;
+                    
+                    let diff = t.type === 'LONG' ? (t.currentPrice - t.entry) : (t.entry - t.currentPrice);
+                    let pct = diff / t.entry;
+                    t.livePnL = parseFloat((t.amount * pct * 10).toFixed(2));
+                }
+            });
+
+            if(hasActive) {
+                localStorage.setItem('tp_trades', JSON.stringify(trades));
+                updateUI();
+            }
+        }, 2000);
 
         function updateUI() {
             document.getElementById('virtualBalance').innerText = '₹' + balance.toLocaleString('en-IN', {minimumFractionDigits: 2});
@@ -152,18 +209,23 @@
 
             let activeTrades = trades.filter(t => t.status === 'Active');
             if(activeTrades.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="6" class="py-4 text-center text-gray-500 text-xs">No active positions open.</td></tr>`;
+                tbody.innerHTML = `<tr><td colspan="7" class="py-4 text-center text-gray-500 text-xs">No active positions open.</td></tr>`;
                 return;
             }
 
             activeTrades.forEach((t) => {
+                let currentPnL = t.livePnL || 0;
+                let pnlColor = currentPnL >= 0 ? 'text-emerald-400' : 'text-red-400';
+                let pnlSign = currentPnL >= 0 ? '+' : '';
+
                 tbody.innerHTML += `
                     <tr>
                         <td class="py-3 px-3 font-semibold text-white">${t.asset}</td>
                         <td class="py-3 px-3"><span class="${t.type === 'LONG' ? 'text-emerald-400 bg-emerald-500/10' : 'text-red-400 bg-red-500/10'} px-2 py-0.5 rounded text-xs font-semibold">${t.type}</span></td>
                         <td class="py-3 px-3 text-gray-300">₹${t.amount.toLocaleString('en-IN')}</td>
                         <td class="py-3 px-3 text-gray-300">₹${t.entry.toLocaleString('en-IN')}</td>
-                        <td class="py-3 px-3"><span class="bg-blue-500/10 text-blue-400 px-2.5 py-1 rounded-full text-xs">Active</span></td>
+                        <td class="py-3 px-3 text-xs text-gray-400">SL: ${t.sl ? '₹'+t.sl : 'None'}<br>TP: ${t.tp ? '₹'+t.tp : 'None'}</td>
+                        <td class="py-3 px-3 font-bold ${pnlColor}">${pnlSign}₹${Math.abs(currentPnL).toLocaleString('en-IN')}</td>
                         <td class="py-3 px-3 text-right"><button onclick="closeTrade(${t.id})" class="bg-red-500/10 text-red-400 px-3 py-1 rounded-lg text-xs hover:bg-red-500/20 font-medium">Close</button></td>
                     </tr>
                 `;
@@ -175,15 +237,11 @@
             let asset = assetSelect.value;
             let entryPrice = parseFloat(assetSelect.options[assetSelect.selectedIndex].getAttribute('data-price'));
             let amount = parseFloat(document.getElementById('tradeAmount').value);
+            let sl = parseFloat(document.getElementById('stopLossPrice').value) || null;
+            let tp = parseFloat(document.getElementById('targetPrice').value) || null;
 
-            if(isNaN(amount) || amount <= 0) {
-                alert('Please enter a valid margin amount in INR.');
-                return;
-            }
-            if(amount > balance) {
-                alert('Insufficient virtual INR balance!');
-                return;
-            }
+            if(isNaN(amount) || amount <= 0) { alert('Enter valid margin amount.'); return; }
+            if(amount > balance) { alert('Insufficient virtual balance!'); return; }
 
             balance -= amount;
 
@@ -193,8 +251,11 @@
                 asset: asset,
                 type: type,
                 entry: entryPrice,
+                currentPrice: entryPrice,
                 amount: amount,
-                pnl: 0,
+                sl: sl,
+                tp: tp,
+                livePnL: 0,
                 status: 'Active'
             };
 
@@ -203,15 +264,14 @@
             localStorage.setItem('tp_trades', JSON.stringify(trades));
 
             updateUI();
-            alert('Trade placed successfully!');
+            alert('Trade placed successfully with Live P&L tracking!');
         }
 
         function closeTrade(id) {
             let trade = trades.find(t => t.id === id);
             if(trade) {
                 trade.status = 'Closed';
-                let randomPct = (Math.random() * 0.3 - 0.1); 
-                trade.pnl = parseFloat((trade.amount * randomPct).toFixed(2));
+                trade.pnl = trade.livePnL || 0;
                 
                 balance += trade.amount + trade.pnl;
 

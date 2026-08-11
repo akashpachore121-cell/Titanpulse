@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TitanPulse - Analytics</title>
+    <title>TitanPulse - PNL Analytics & Performance</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -12,80 +12,288 @@
     </script>
 </head>
 <body class="bg-darkBg text-gray-100 font-sans antialiased flex h-screen overflow-hidden">
-    <aside class="w-64 bg-cardBg border-r border-cardBorder flex flex-col justify-between hidden md:flex">
+    <!-- Sidebar -->
+    <aside class="w-64 bg-cardBg border-r border-cardBorder flex flex-col justify-between hidden md:flex shrink-0">
         <div>
             <div class="p-6 border-b border-cardBorder flex items-center space-x-3">
                 <div class="bg-gradient-to-tr from-blue-600 to-indigo-500 p-2.5 rounded-xl shadow-lg"><i class="fa-solid fa-bolt text-white text-lg"></i></div>
                 <h1 class="font-extrabold text-xl tracking-wider text-white">TITAN<span class="text-blue-500">PULSE</span></h1>
             </div>
-            <nav class="p-4 space-y-1.5">
+            <nav class="p-4 space-y-1.5 text-sm">
                 <a href="dashboard.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-house w-5"></i><span>Dashboard</span></a>
                 <a href="live-chart.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-chart-line w-5"></i><span>Live Chart</span></a>
                 <a href="demo-trading.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-wallet w-5"></i><span>Demo Trading</span></a>
                 <a href="trade-journal.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-book-open w-5"></i><span>Trade Journal</span></a>
-                <a href="analytics.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl bg-blue-600 text-white font-medium shadow-lg shadow-blue-600/30 transition-all"><i class="fa-solid fa-chart-pie w-5"></i><span>Analytics</span></a>
+                <a href="analytics.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl bg-blue-600 text-white font-medium shadow-lg shadow-blue-600/30 transition-all"><i class="fa-solid fa-chart-pie w-5"></i><span>PNL Analytics</span></a>
                 <a href="settings.html" class="flex items-center space-x-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800/60 transition-all"><i class="fa-solid fa-gear w-5"></i><span>Settings</span></a>
             </nav>
         </div>
         <div class="p-4 border-t border-cardBorder">
             <div class="flex items-center justify-between bg-gray-900/50 p-3 rounded-xl border border-gray-800">
                 <div class="flex items-center space-x-3 truncate">
-                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center font-bold text-white shrink-0">TU</div>
-                    <div class="truncate"><p class="text-sm font-semibold text-white truncate">TitanPulse User</p><p class="text-xs text-gray-400 truncate">user@email.com</p></div>
+                    <div class="w-10 h-10 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 flex items-center justify-center font-bold text-white shrink-0">TP</div>
+                    <div class="truncate"><p class="text-sm font-semibold text-white truncate">Pro Trader</p><p class="text-xs text-gray-400 truncate">Indore, India</p></div>
                 </div>
             </div>
         </div>
     </aside>
 
+    <!-- Main Content Area -->
     <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+        <!-- Top Header -->
         <header class="bg-cardBg border-b border-cardBorder h-16 flex items-center justify-between px-6 shrink-0">
-            <h2 class="text-lg font-bold text-white">Performance Analytics</h2>
-        </header>
-        <main class="p-6 space-y-6 max-w-7xl mx-auto w-full">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl">
-                    <p class="text-gray-400 text-sm">Total Executed Trades</p>
-                    <h3 id="statTotal" class="text-2xl font-bold text-white mt-2">0</h3>
-                </div>
-                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl">
-                    <p class="text-gray-400 text-sm">Closed Trades P&L</p>
-                    <h3 id="statPnL" class="text-2xl font-bold text-emerald-400 mt-2">$0.00</h3>
-                </div>
-                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl">
-                    <p class="text-gray-400 text-sm">Current Virtual Capital</p>
-                    <h3 id="statCap" class="text-2xl font-bold text-blue-400 mt-2">$10,000.00</h3>
+            <div class="flex items-center space-x-6 text-sm">
+                <span class="font-bold text-white tracking-wide">PNL ANALYTICS</span>
+                <span class="text-gray-500 hidden sm:inline">|</span>
+                <div class="hidden sm:flex items-center space-x-2 bg-gray-900 border border-gray-800 px-3 py-1 rounded-lg">
+                    <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                    <span class="text-xs text-gray-300">Live API Sync</span>
                 </div>
             </div>
+            <div class="flex items-center space-x-4">
+                <div class="bg-emerald-500/10 border border-emerald-500/20 px-3 py-1.5 rounded-xl text-emerald-400 font-bold text-sm">
+                    ₹<span id="headerBalance">8,50,000.00</span>
+                </div>
+                <div class="w-8 h-8 rounded-full bg-gray-800 flex items-center justify-center text-gray-300"><i class="fa-regular fa-bell text-xs"></i></div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="p-6 space-y-6 max-w-7xl mx-auto w-full">
+            
+            <!-- Top Summary Cards & Date Filters -->
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="bg-cardBg border border-cardBorder p-4 rounded-2xl">
+                    <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Total Unrealized PNL</p>
+                    <p id="totalUnrealized" class="text-xl font-bold text-emerald-400">₹0.00</p>
+                </div>
+                <div class="bg-cardBg border border-cardBorder p-4 rounded-2xl">
+                    <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Total Realised PNL</p>
+                    <p id="totalRealised" class="text-xl font-bold text-emerald-400">₹0.00</p>
+                </div>
+                <div class="bg-cardBg border border-cardBorder p-4 rounded-2xl">
+                    <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Win Rate</p>
+                    <p id="winRateDisplay" class="text-xl font-bold text-white">0.00%</p>
+                </div>
+                <div class="bg-cardBg border border-cardBorder p-4 rounded-2xl">
+                    <p class="text-xs text-gray-400 uppercase tracking-wider mb-1">Total Trades Executed</p>
+                    <p id="totalTradesCount" class="text-xl font-bold text-blue-400">0</p>
+                </div>
+            </div>
+
+            <!-- Date Range Selector -->
+            <div class="flex items-center space-x-2 bg-cardBg border border-cardBorder p-1.5 rounded-xl w-fit">
+                <button class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-xs font-semibold shadow">Last 7 days</button>
+                <button class="px-3 py-1.5 text-gray-400 hover:text-white rounded-lg text-xs font-medium">Last 30 days</button>
+                <button class="px-3 py-1.5 text-gray-400 hover:text-white rounded-lg text-xs font-medium">Customize</button>
+            </div>
+
+            <!-- Trading Equity Line Chart Section -->
             <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl">
-                <h3 class="font-bold text-white text-base mb-4">Trading Activity Overview</h3>
-                <div class="h-64 relative"><canvas id="analyticsChart"></canvas></div>
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-white text-sm tracking-wide uppercase">Trading Equity Growth</h3>
+                    <div class="flex items-center space-x-4 text-xs text-gray-400">
+                        <span class="flex items-center space-x-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span><span>Equity Curve</span></span>
+                        <span class="flex items-center space-x-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span><span>Deposits</span></span>
+                    </div>
+                </div>
+                <div class="h-[280px] w-full">
+                    <canvas id="equityChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Asset/Market Tabs -->
+            <div class="flex space-x-2 border-b border-cardBorder pb-3 text-sm font-semibold">
+                <button class="text-blue-400 border-b-2 border-blue-500 pb-2 px-1">All Markets</button>
+                <button class="text-gray-400 hover:text-white pb-2 px-1">Crypto (INR)</button>
+                <button class="text-gray-400 hover:text-white pb-2 px-1">Forex (USD/INR)</button>
+            </div>
+
+            <!-- 4-Grid Analytics Charts -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- 1. Realised PNL Bar Chart -->
+                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl flex flex-col justify-between">
+                    <h3 class="font-bold text-white text-sm mb-3">Realised PNL Distribution</h3>
+                    <div class="h-[220px] relative">
+                        <canvas id="realisedPnlChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 2. Volume Traded Bar Chart -->
+                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl flex flex-col justify-between">
+                    <h3 class="font-bold text-white text-sm mb-3">Volume Traded (₹)</h3>
+                    <div class="h-[220px] relative">
+                        <canvas id="volumeChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 3. Fees Paid Bar Chart -->
+                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl flex flex-col justify-between">
+                    <h3 class="font-bold text-white text-sm mb-3">Fees Paid & Discounts</h3>
+                    <div class="h-[220px] relative">
+                        <canvas id="feesChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- 4. Funding Bar Chart -->
+                <div class="bg-cardBg border border-cardBorder p-5 rounded-2xl flex flex-col justify-between">
+                    <h3 class="font-bold text-white text-sm mb-3">Margin & Funding PNL</h3>
+                    <div class="h-[220px] relative">
+                        <canvas id="fundingChart"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Disclaimer Footer -->
+            <div class="text-xs text-gray-500 space-y-1 pt-4 border-t border-cardBorder">
+                <p>• Due to the complexity of financial data, there might be nuances and delay. Data displayed above is for reference only.</p>
+                <p>• Historical data analytics synchronized securely via local device storage.</p>
             </div>
         </main>
     </div>
 
+    <!-- Script to Load LocalStorage Metrics & Render Professional Charts -->
     <script>
-        window.addEventListener('DOMContentLoaded', () => {
-            let trades = JSON.parse(localStorage.getItem('tp_trades')) || [];
-            let balance = parseFloat(localStorage.getItem('tp_balance')) || 10000.00;
+        let balance = parseFloat(localStorage.getItem('tp_balance')) || 850000.00;
+        let trades = JSON.parse(localStorage.getItem('tp_trades')) || [];
 
-            document.getElementById('statTotal').innerText = trades.length;
-            let closedPnL = trades.filter(t => t.status === 'Closed').reduce((acc, t) => acc + t.pnl, 0);
-            
-            const pnlEl = document.getElementById('statPnL');
-            pnlEl.innerText = (closedPnL >= 0 ? '+$' : '-$') + Math.abs(closedPnL).toFixed(2);
-            pnlEl.className = `text-2xl font-bold mt-2 ${closedPnL >= 0 ? 'text-emerald-400' : 'text-red-400'}`;
-            
-            document.getElementById('statCap').innerText = '$' + balance.toLocaleString('en-US', {minimumFractionDigits: 2});
+        document.getElementById('headerBalance').innerText = balance.toLocaleString('en-IN', {minimumFractionDigits: 2});
 
-            const ctx = document.getElementById('analyticsChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
-                    datasets: [{ data: [120, 240, -50, 400, 190, closedPnL], backgroundColor: '#3b82f6', borderRadius: 6 }]
-                },
-                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
-            });
+        // Compute metrics from trades
+        let totalRealised = trades.reduce((acc, t) => acc + (t.status === 'Closed' ? (t.pnl || 0) : 0), 0);
+        let totalUnrealized = trades.filter(t => t.status === 'Active').reduce((acc, t) => acc + (t.livePnL || 0), 0);
+        let winningTrades = trades.filter(t => t.status === 'Closed' && (t.pnl || 0) > 0).length;
+        let closedTradesCount = trades.filter(t => t.status === 'Closed').length;
+        let winRate = closedTradesCount > 0 ? ((winningTrades / closedTradesCount) * 100).toFixed(2) : '0.00';
+
+        document.getElementById('totalRealised').innerText = (totalRealised >= 0 ? '+₹' : '-₹') + Math.abs(totalRealised).toLocaleString('en-IN', {minimumFractionDigits: 2});
+        document.getElementById('totalUnrealized').innerText = (totalUnrealized >= 0 ? '+₹' : '-₹') + Math.abs(totalUnrealized).toLocaleString('en-IN', {minimumFractionDigits: 2});
+        document.getElementById('winRateDisplay').innerText = winRate + '%';
+        document.getElementById('totalTradesCount').innerText = trades.length;
+
+        // 1. Equity Line Chart
+        const equityCtx = document.getElementById('equityChart').getContext('2d');
+        new Chart(equityCtx, {
+            type: 'line',
+            data: {
+                labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Today'],
+                datasets: [{
+                    label: 'Trading Equity',
+                    data: [850000, 852000, 849000, 855000, 853000, 860000, balance],
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.05)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#9ca3af', font: { size: 10 } } },
+                    y: { grid: { color: '#1f2937' }, ticks: { color: '#9ca3af', font: { size: 10 } } }
+                }
+            }
+        });
+
+        // 2. Realised PNL Bar Chart
+        const realisedCtx = document.getElementById('realisedPnlChart').getContext('2d');
+        new Chart(realisedCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    data: [1200, -850, 2400, 0, 1500, -400, totalRealised || 500],
+                    backgroundColor: function(context) {
+                        return context.raw >= 0 ? '#10b981' : '#ef4444';
+                    },
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#9ca3af', font: { size: 10 } } },
+                    y: { grid: { color: '#1f2937' }, ticks: { color: '#9ca3af', font: { size: 10 } } }
+                }
+            }
+        });
+
+        // 3. Volume Traded Bar Chart
+        const volumeCtx = document.getElementById('volumeChart').getContext('2d');
+        new Chart(volumeCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    data: [45000, 120000, 85000, 30000, 95000, 150000, 210000],
+                    backgroundColor: '#8b5cf6',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#9ca3af', font: { size: 10 } } },
+                    y: { grid: { color: '#1f2937' }, ticks: { color: '#9ca3af', font: { size: 10 } } }
+                }
+            }
+        });
+
+        // 4. Fees Paid Bar Chart
+        const feesCtx = document.getElementById('feesChart').getContext('2d');
+        new Chart(feesCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    data: [45, 120, 85, 30, 95, 150, 75],
+                    backgroundColor: '#f59e0b',
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#9ca3af', font: { size: 10 } } },
+                    y: { grid: { color: '#1f2937' }, ticks: { color: '#9ca3af', font: { size: 10 } } }
+                }
+            }
+        });
+
+        // 5. Funding Bar Chart
+        const fundingCtx = document.getElementById('fundingChart').getContext('2d');
+        new Chart(fundingCtx, {
+            type: 'bar',
+            data: {
+                labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+                datasets: [{
+                    data: [-12, 45, -23, -5, 65, -18, 30],
+                    backgroundColor: function(context) {
+                        return context.raw >= 0 ? '#10b981' : '#ef4444';
+                    },
+                    borderRadius: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: { grid: { display: false }, ticks: { color: '#9ca3af', font: { size: 10 } } },
+                    y: { grid: { color: '#1f2937' }, ticks: { color: '#9ca3af', font: { size: 10 } } }
+                }
+            }
         });
     </script>
 </body>
